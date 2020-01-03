@@ -1,14 +1,13 @@
 import java.util.*;
 import java.io.*;
 
-public class _boj_18224 {
+public class _boj_18224_V4 {
 	static int map[][];
 	static boolean visited[][][][];
 	static int N,M;
 	static int dr[] = {-1,0,1,0};
 	static int dc[] = {0,1,0,-1};
-	static int front,rear;
-	static int q[][] = new int[8000000][2];
+	
 	static int isPossible(int r,int c,int k) {
 		int nr = r + dr[k];
 		int nc = c + dc[k];
@@ -26,24 +25,25 @@ public class _boj_18224 {
 	
 	static String bfs(int sr,int sc) {
 		String res = "-1";
-		visited[sr][sc][1][0] = true;
-		q[rear][0] = sr;
-		q[rear++][1] = sc;
+//		visited[sr][sc][1][0] = true;
+		Queue<Point> q = new LinkedList<>();
+		q.add(new Point(sr,sc));
 		int time = 0;
 		String now = "sun";
 		
-		while(rear - front > 0) {
+		while(!q.isEmpty()) {
 			time++;
 			int T = 0;
 			now = "sun";
 			while(++T <= M) {
-				int q_size = rear - front;
+				int q_size = q.size();
 				while(q_size-- > 0) {
-					int r = q[front][0];
-					int c = q[front++][1];
-					int cnt = T % M;
+					Point p = q.poll();
+					int r = p.r;
+					int c = p.c;
+					int cnt = (T + 1) % M;
 					int day = 0;
-//					System.out.println(r + " " + c + " " + cnt + " " + day);
+					System.out.println(r + " " + c + " " + cnt + " " + day);
 					if(r == N-1 && c == N-1) {
 						return time + " " + now;
 					}
@@ -53,7 +53,7 @@ public class _boj_18224 {
 						int nc = c + dc[k];
 						if(nr < 0 || nr >= N || nc < 0 || nc >= N || visited[nr][nc][cnt][day]) continue;
 						if(map[nr][nc] == 0) {
-							q[rear][0] = nr; q[rear++][1] = nc;
+							q.add(new Point(nr,nc));
 							visited[nr][nc][cnt][day] = true;
 						}
 					}
@@ -63,13 +63,14 @@ public class _boj_18224 {
 			T = 0;
 			now = "moon";
 			while(++T <= M) {
-				int q_size = rear - front;
+				int q_size = q.size();
 				while(q_size-- > 0) {
-					int r = q[front][0];
-					int c = q[front++][1];
-					int cnt = T % M;
+					Point p = q.poll();
+					int r = p.r;
+					int c = p.c;
+					int cnt = (T + 1) % M;
 					int day = 1;
-//					System.out.println(r + " " + c + " " + cnt + " " + day);
+					System.out.println(r + " " + c + " " + cnt + " " + day);
 					if(r == N-1 && c == N-1) {
 						return time + " " + now;
 					}
@@ -79,7 +80,7 @@ public class _boj_18224 {
 						int nc = c + dc[k];
 						if(nr < 0 || nr >= N || nc < 0 || nc >= N || visited[nr][nc][cnt][day]) continue;
 						if(map[nr][nc] == 0) {
-							q[rear][0] = nr; q[rear++][1] = nc;
+							q.add(new Point(nr,nc));
 							visited[nr][nc][cnt][day] = true;
 						}else {
 							int val = 0;
@@ -87,7 +88,7 @@ public class _boj_18224 {
 								nr += dr[k]*val;
 								nc += dc[k]*val;
 								if(visited[nr][nc][cnt][day]) continue;
-								q[rear][0] = nr; q[rear++][1] = nc;
+								q.add(new Point(nr,nc));
 								visited[nr][nc][cnt][day] = true;
 							}
 						}
