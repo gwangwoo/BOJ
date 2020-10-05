@@ -29,10 +29,6 @@ public class _swea_10571 {
 				}
 			}
 		
-			
-			for(int i = 0 ; i < N ; i++) System.out.print(r_max[i] + " ");
-			System.out.println();
-			for(int i = 0 ; i < M ; i++) System.out.print(c_max[i] + " ");;
 			boolean flag = false;
 			for(int i = 0 ; i < N ; i++) {
 				for(int j = 0 ; j < M ; j++) {
